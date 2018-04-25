@@ -2,7 +2,11 @@ package com.ELfront.Text;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -11,8 +15,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.ELfront.Constant.ConClass;
+import com.ELfront.Constant.ConNet;
 import com.ELfront.Constant.Constant;
 import com.ELfront.GUI.PictureGUI;
+import com.ELfront.GUI.Learning.EnglishExamGUI;
+import com.ELfront.po.User;
 
 
 public class TestMainGUI extends JFrame{
@@ -37,32 +45,7 @@ public class TestMainGUI extends JFrame{
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				JFileChooser jfc=new JFileChooser();
-				FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG", "jpg","png","PNG","jpeg","jpeg");
-				jfc.setFileFilter(filter);
-		        jfc.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES );  
-		        jfc.showDialog(new JLabel(), "选择");  
-		        File file=jfc.getSelectedFile();  
-		        if(file.isDirectory()){  
-		            System.out.println("文件夹:"+file.getAbsolutePath());  
-		        }else if(file.isFile()){ 
-		        	
-		            System.out.println("文件:"+file.getAbsolutePath());
-		            Constant.PICTURE = file.getAbsolutePath();
-		            new PictureGUI();
-		        }  
-		        System.out.println(jfc.getSelectedFile().getName()); 
-		        
-//				ScreenShotWindow ssw;
-//				try {
-//					ssw = new ScreenShotWindow();
-//					ssw.setVisible(true);
-//				} catch (AWTException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
-//				new PictureGUI();
+				WordHttp(ConNet.ENGLISHEXAMURL+"?Word="+"work");
 			}
 		});
 
@@ -72,6 +55,31 @@ public class TestMainGUI extends JFrame{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setResizable(false);
+	}
+	
+	public String WordHttp(String path) {
+		String result = "";
+		String url = path;
+        try {
+        	HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+			connection.setRequestMethod("POST");
+			connection.setConnectTimeout(200);
+			if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                System.out.println("超时");
+            }else {
+            	InputStreamReader in = new InputStreamReader(connection.getInputStream());
+                BufferedReader buf = new BufferedReader(in);
+                String readLine = null;
+                while ((readLine = buf.readLine()) != null) {
+                    result += readLine;
+                }
+                System.out.println("收到："+result);
+            }
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	
@@ -93,6 +101,8 @@ public class TestMainGUI extends JFrame{
 //		e.printStackTrace();
 //	}
 //	new PersonalGUI();
-		new TestMainGUI();
+//		new TestMainGUI();
+//		doGet(ConNet.ENGLISHEXAMURL+"?Word="+"work");
+//		new EnglishExamGUI();
 	}
 }

@@ -2,6 +2,8 @@ package com.ELfront.GUI.Fragment;
 
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.BufferedReader;
@@ -15,14 +17,17 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.ELfront.Constant.ClassThis;
 import com.ELfront.Constant.ConClass;
 import com.ELfront.Constant.Constant;
 import com.ELfront.GUI.PictureGUI;
+import com.ELfront.GUI.Learning.ChroseGUI;
 
 public class Personal_Fragment extends JPanel {
 
@@ -32,10 +37,12 @@ public class Personal_Fragment extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JLabel userphoto;
-	private JLabel Jname, Jsex, Jcollege, Jclass, Jdaylearn, Jfuxi;
-	private JLabel name, sex, college, classes, daylearn, fuxi;
+	private JLabel Jname, Jsex, Jcollege, Jclass, Jdaylearn;
+	private JLabel name, sex, college, classes, daylearn;
+	private JButton jButton;
 
 	public Personal_Fragment() {
+		ClassThis.PFragment = this;
 		init();
 	}
 
@@ -117,17 +124,11 @@ public class Personal_Fragment extends JPanel {
 		Jclass.setFont(new Font("宋体", 1, 30));
 		add(Jclass);
 
-		Jdaylearn = new JLabel("今日已学：");
-		Jdaylearn.setBounds(455, 230, 180, 50);
+		Jdaylearn = new JLabel("已选择词库：");
+		Jdaylearn.setBounds(455, 230, 280, 50);
 		Jdaylearn.setFont(new Font("宋体", 1, 30));
 		add(Jdaylearn);
 
-		Jfuxi = new JLabel("需复习：");
-		Jfuxi.setBounds(455, 285, 140, 50);
-		Jfuxi.setFont(new Font("宋体", 1, 30));
-		add(Jfuxi);
-
-		// name,sex,college,classes,daylearn,fuxi
 		name = new JLabel(ConClass.getUserMain().getUsermainname());
 		name.setBounds(635, 10, 260, 50);
 		name.setFont(new Font("宋体", 1, 30));
@@ -153,16 +154,47 @@ public class Personal_Fragment extends JPanel {
 		daylearn.setFont(new Font("宋体", 1, 30));
 		add(daylearn);
 
-		fuxi = new JLabel("需复习：");
-		fuxi.setBounds(635, 285, 140, 50);
-		fuxi.setFont(new Font("宋体", 1, 30));
-		add(fuxi);
-
+		jButton = new JButton("选择");
+		jButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				new ChroseGUI();
+			}
+		});
+		
+		if(ConClass.getUser().getCikuid()==0) {
+			daylearn.setText("未选择");
+			jButton.setBounds(760, 240, 80, 30);
+			add(jButton);
+		}else {
+			switch(ConClass.getUser().getCikuid()) {
+			case 1:
+				daylearn.setText("四级");
+				break;
+			case 10:
+				daylearn.setText("六级");
+				break;
+			case 100:
+				daylearn.setText("考研");
+				break;
+			case 1000:
+				daylearn.setText("GRE");
+				break;
+				default:
+					break;
+			}
+		}
+		
+		
 		this.setLayout(null);
 		add(userphoto);
 
 	}
 
+	
+	
 	public void setIcon(String file, JLabel com) {
 		ImageIcon ico = new ImageIcon(file);
 		ico.getImage();
@@ -233,4 +265,23 @@ public class Personal_Fragment extends JPanel {
 		return rsp;
 	}
 
+	public void initmore() {
+		jButton.setVisible(false);
+		switch(ConClass.getUser().getCikuid()) {
+		case 1:
+			daylearn.setText("四级");
+			break;
+		case 10:
+			daylearn.setText("六级");
+			break;
+		case 100:
+			daylearn.setText("考研");
+			break;
+		case 1000:
+			daylearn.setText("GRE");
+			break;
+			default:
+				break;
+		}
+	}
 }

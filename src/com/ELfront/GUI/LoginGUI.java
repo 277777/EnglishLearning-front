@@ -109,6 +109,17 @@ public class LoginGUI extends JFrame {
 		if (string.equals(Constant.NOUSER)) {
 			JOptionPane.showMessageDialog(null, "用户名或密码错误","警告",JOptionPane.ERROR_MESSAGE);
 		} else {
+            String[] strings = string.split("#");
+            user.setUserid(Integer.valueOf(strings[0]));
+            user.setUsername(strings[1]);
+            user.setUserpwd(strings[2]);
+            user.setUsertele(strings[3]);
+            user.setUserlearn(Integer.valueOf(strings[4]));
+            user.setCikuid(Integer.valueOf(strings[5]));
+            user.setShengcibenid(Integer.valueOf(strings[6]));
+            user.setUsermainid(Integer.valueOf(strings[7]));
+            user.setUserimg(strings[8]);
+            ConClass.setUser(user);
 			if(ConClass.getUser().getUsermainid()==0) {
 				JOptionPane.showMessageDialog(null, "请完善个人信息", "提示",JOptionPane.PLAIN_MESSAGE);
 				new UserMainGUI();
@@ -139,7 +150,7 @@ public class LoginGUI extends JFrame {
 	}
 	
 	public String LoginHttp() {
-		String result = null;
+		String result = "";
 		User user = ConClass.getUser();
 		String url = ConNet.LOGINURL+"?Name="+user.getUsername()+"&Pwd="+
 				user.getUserpwd();
@@ -157,20 +168,8 @@ public class LoginGUI extends JFrame {
                     result += readLine;
                 }
                 System.out.println("收到："+result);
-                result = result.substring(36);
+                //result = result.substring(36);
                 System.out.println("收到："+result);
-                String[] strings = result.split("#");
-                user.setUserid(Integer.valueOf(strings[0]));
-                user.setUsername(strings[1]);
-                user.setUserpwd(strings[2]);
-                user.setUsertele(strings[3]);
-                user.setUserlearn(Integer.valueOf(strings[4]));
-                user.setCikuid(Integer.valueOf(strings[5]));
-                user.setShengcibenid(Integer.valueOf(strings[6]));
-                user.setUsermainid(Integer.valueOf(strings[7]));
-                user.setUserimg(strings[8]);
-                //new LoginGUI().CallBack(result);
-                ConClass.setUser(user);
             }
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

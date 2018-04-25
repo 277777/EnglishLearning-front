@@ -193,7 +193,7 @@ public class UserMainGUI extends JFrame {
 	}
 
 	public String UserMainHttp(String url) {
-		String result = null;
+		String result = "";
 		try {
 			HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
 			connection.setRequestMethod("POST");
@@ -207,7 +207,7 @@ public class UserMainGUI extends JFrame {
 				while ((readLine = buf.readLine()) != null) {
 					result += readLine;
 				}
-				result = result.substring(36);
+				//result = result.substring(36);
 				System.out.println("收到：" + result);
 			}
 		} catch (Exception e) {

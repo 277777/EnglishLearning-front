@@ -138,7 +138,7 @@ public class ForgetpwdGUI extends JFrame{
 	}
 	
 	public String ForgetHttp() {
-		String result = null;
+		String result = "";
 		User user = ConClass.getUser();
 		String url = ConNet.REPASSWORDURL+"?Name="+user.getUsername()+"&Pwd="+
 				user.getUserpwd()+"&Tele="+user.getUsertele();
@@ -156,7 +156,6 @@ public class ForgetpwdGUI extends JFrame{
                     result += readLine;
                 }
                 System.out.println("收到："+result);
-                result = result.substring(36);
                 System.out.println("收到："+result);
                 //new ForgetpwdGUI().CallBack(result);
             }

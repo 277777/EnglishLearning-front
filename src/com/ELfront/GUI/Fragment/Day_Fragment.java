@@ -117,14 +117,14 @@ public class Day_Fragment extends JPanel {
 			});
 
 			english = new JLabel();
-			english.setSize(400, 50);// 注意JLabel一定要设置宽度
+			english.setSize(500, 50);// 注意JLabel一定要设置宽度
 			try {
 				JlabelSetText(english, "&nbsp;&nbsp;" + newsJson.getContent());
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			english.setBounds(489, 80, 400, 90);
+			english.setBounds(489, 80, 500, 90);
 			english.setFont(new Font("宋体", 1, 20));
 
 			chinese = new JLabel();

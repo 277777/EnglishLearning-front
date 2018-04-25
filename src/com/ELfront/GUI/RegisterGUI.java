@@ -40,7 +40,6 @@ public class RegisterGUI extends JFrame{
 	
 	public RegisterGUI() {
 		
-		super("注册");
 		init();
 	}
 	
@@ -74,7 +73,8 @@ public class RegisterGUI extends JFrame{
 						user.setUserpwd(password);
 						user.setUsertele(telephone);
 						ConClass.setUser(user);
-						RegisterHttp();
+						String result = RegisterHttp();
+						CallBack(result);
 					}
 					else JOptionPane.showMessageDialog(null, "手机号不符合格式","警告",JOptionPane.ERROR_MESSAGE);
 				}else JOptionPane.showMessageDialog(null, "两次密码输入不一致","警告",JOptionPane.ERROR_MESSAGE);
@@ -105,7 +105,7 @@ public class RegisterGUI extends JFrame{
 		frame.add(relabelpwd);
 		frame.add(textFieldrepwd);
 		
-		//setTitle("注册");
+		setTitle("注册");
 		add(frame);
 		setVisible(true);
 		setSize(480, 480);
@@ -130,7 +130,7 @@ public class RegisterGUI extends JFrame{
 	}
 	
 	public String RegisterHttp() {
-		String result = null;
+		String result = "";
 		User user = ConClass.getUser();
 		String url = ConNet.REGISTERURL+"?Name="+user.getUsername()+"&Pwd="+
 				user.getUserpwd()+"&Tele="+user.getUsertele();
@@ -147,7 +147,7 @@ public class RegisterGUI extends JFrame{
                 while ((readLine = buf.readLine()) != null) {
                     result += readLine;
                 }
-                result = result.substring(36);
+                //result = result.substring(36);
                 System.out.println("收到："+result);
                 //new RegisterGUI().CallBack(result);
             }

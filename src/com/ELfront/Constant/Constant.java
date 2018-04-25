@@ -1,5 +1,6 @@
 package com.ELfront.Constant;
 
+import com.ELfront.GUI.Fragment.Personal_Fragment;
 
 public class Constant {
 	public static final String SUCCESSFUL = "successful";
@@ -10,4 +11,5 @@ public class Constant {
 	public static String USERPERSON = "resource/UserPerson/";
 	
 	public static String PICTURE ;
+	
 }

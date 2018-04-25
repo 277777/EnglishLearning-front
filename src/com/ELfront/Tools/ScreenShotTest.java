@@ -129,8 +129,74 @@ class ScreenShotWindow extends JWindow {
 		// 初始化一个默认文件（此文件会生成到桌面上）
 		String filePath = "resource/UserPerson/"+ConClass.getUser().getUsername()+"/touxiang.png";
 		ImageIO.write(saveImage, "png", new File(filePath));
+		HttpUpload(ConNet.UPLOADURL+"?Name="+ConClass.getUser().getUsername());
 		dispose();
 	}
+	
+	public String HttpUpload(String strings) {
+        String urlStr = strings;
+        String rsp = "";
+        HttpURLConnection conn = null;
+        String BOUNDARY = "|";
+        try {
+            URL url = new URL(urlStr);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(5000);
+            conn.setReadTimeout(30000);
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setUseCaches(false);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("User-Agent",
+                    "Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-CN; rv:1.9.2.6)");
+            conn.setRequestProperty("Content-Type",
+                    "multipart/form-data; boundary=" + BOUNDARY);
+
+            OutputStream out = new DataOutputStream(conn.getOutputStream());
+            
+            File file = new File("F:\\Java\\Eclipse-oxygen2\\EnglishLearning-front\\resource\\UserPerson\\"+ConClass.getUser().getUsername()+"\\touxiang.png");
+            String filePath = "F:\\Java\\Eclipse-oxygen2\\EnglishLearning-front\\resource\\UserPerson\\"+ConClass.getUser().getUsername()+"\\touxiang.png";
+            
+            String filename = file.getName();
+            String contentType = "image/png";
+            StringBuffer strBuf = new StringBuffer();
+            strBuf.append("\r\n").append("--").append(BOUNDARY).append("\r\n");
+            strBuf.append("Content-Disposition: form-data; name=\"" + filePath
+                    + "\"; filename=\"" + filename + "\"\r\n");
+            strBuf.append("Content-Type:" + contentType + "\r\n\r\n");
+            out.write(strBuf.toString().getBytes());
+            DataInputStream in = new DataInputStream(new FileInputStream(file));
+            int bytes = 0;
+            byte[] bufferOut = new byte[1024];
+            while ((bytes = in.read(bufferOut)) != -1) {
+                out.write(bufferOut, 0, bytes);
+            }
+            in.close();
+            byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
+            out.write(endData);
+            out.flush();
+            out.close();
+            StringBuffer buffer = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                buffer.append(line).append("\n");
+            }
+            rsp = buffer.toString();
+            reader.close();
+            reader = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+                conn = null;
+            }
+        }
+        return rsp;
+	}
+	
 	
 }
 
@@ -179,4 +245,5 @@ class ToolsWindow extends JWindow {
 		toolBar.add(closeButton);
 		this.add(toolBar, BorderLayout.NORTH);
 	}
+	
 }
